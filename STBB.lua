@@ -1,34 +1,31 @@
--- 加载 WindUI 库
-local WindUI = loadstring(game:HttpGet("https://tree-hub.vercel.app/api/UI/WindUI"))()
+local Version = "1.3.0"
+local WindUI = loadstring(game:HttpGet("https://tree-hub.vercel.app/api/UI/WindUI/" .. Version))()
 
-
--- 创建窗
 local Window = WindUI:CreateWindow({
-    Title = "STBB:Subtitle", -- 窗口标题
-    Icon = "door-open", -- 窗口图标
-    Author = "Subtitle", -- 作者名称
-    Folder = "数据文件夹(删了没你好果子吃)", -- 用于保存数据的文件夹名称
-    Size = UDim2.fromOffset(640, 320), -- 窗口大小
-    Transparent = true, -- 是否透明
-    Theme = "Dark", -- 主题颜色，可以是 "Light" 或 "Dark"
-    UserEnabled = false, -- 是否允许用户启用/禁用窗口
-    SideBarWidth = 130, -- 侧边栏宽度
-    HasOutline = true, -- 是否有边框
+    Title = "STBB:Subtitle",
+    Icon = "door-open", 
+    Author = "Subtitle", 
+    Folder = "数据文件夹",
+    Size = UDim2.fromOffset(710, 400),
+    Transparent = true, 
+    Theme = "Dark", 
+    UserEnabled = false,
+    SideBarWidth = 140, 
+    HasOutline = true, 
 })
 
--- 开关按钮
 Window:EditOpenButton({
-    Title = "神之力", -- 按钮的标题
-    Icon = "monitor", -- 按钮的图标，可以是Lucide图标名称
-    CornerRadius = UDim.new(0,20), -- 按钮的圆角半径
-    StrokeThickness = 1, -- 按钮边框的厚度
-    Color = ColorSequence.new( -- 按钮的渐变颜色
+    Title = "神之力", 
+    Icon = "door-open",
+    CornerRadius = UDim.new(0,20),
+    StrokeThickness = 1, 
+    Color = ColorSequence.new(
         Color3.fromHex("FF0F7B"), 
         Color3.fromHex("F89B29")
     ),
-    Position = UDim2.new(0.5,0,0.5,0), -- 按钮的位置
-    Enabled = true,   -- 按钮是否启用
-    Draggable = true, -- 按钮是否可拖动
+    Position = UDim2.new(0.5,0,0.5,0),
+    Enabled = true,   
+    Draggable = true, 
 })
 
 
@@ -37,10 +34,12 @@ local MainTab = Window:Tab({
     Icon = "house",
 })
 
+MainTab:Section({ Title = "主要" })
+MainTab:Section({ Title = "你们应该都知道分别都是啥功能了" })
+
 
 local Button = MainTab:Button({
     Title = "UTC页",
-    Desc = "开启utc商店页面的",
     Callback = function()
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
@@ -121,7 +120,6 @@ end)
 
 local Button = MainTab:Button({
     Title = "重置人物",
-    Desc = "重置CD血量武器储存",
     Callback = function()
          		      		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(152.35, -497.32, 394.21)
     end,
@@ -136,7 +134,6 @@ local Button = MainTab:Button({
 
 local Button = MainTab:Button({
     Title = "钱即无敌",
-    Desc = "只要你有钱就可以让你做到无敌",
     Callback = function()
         local args = {
     [1] = "Buy",
@@ -160,7 +157,6 @@ end
 
 local Button = MainTab:Button({
     Title = "死亡激光",
-    Desc = "反派无需开狂暴就可以使用轨道炮",
     Callback = function()
 local function createButton()
     local button = Instance.new("TextButton")
@@ -239,7 +235,6 @@ end
 
 local Button = MainTab:Button({
     Title = "雷达检测",
-    Desc = "检测地图上是否存在神风自爆队",
     Callback = function()
 local player = game.Players.LocalPlayer
 local playerGui = player:WaitForChild("PlayerGui")
@@ -330,7 +325,6 @@ startChecking()
 
 local Button = MainTab:Button({
     Title = "监控博士",
-    Desc = "拥有机甲状态的部分能力",
     Callback = function()
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
@@ -382,7 +376,6 @@ createButton("飞行", UDim2.new(0.5, 170, 0.5, 10), "Tackle")
 
 local Button = MainTab:Button({
     Title = "飞机商店",
-    Desc = "直接打开飞机商店",
     Callback = function()
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
@@ -440,7 +433,6 @@ end)
 
 local Button = MainTab:Button({
     Title = "准星调整",
-    Desc = "更good的准星",
     Callback = function()
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
@@ -471,7 +463,6 @@ MiddleIcon.Position = UDim2.new(0.5, 0, 0.5, 0)  -- 调整到正中心
 
 local Button = MainTab:Button({
     Title = "四角传送",
-    Desc = "在四个坐标循环传送",
     Callback = function()
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
@@ -542,7 +533,6 @@ end
 
 local Button = MainTab:Button({
     Title = "无限弹药",
-    Desc = "花光所有的钱为快速po枪补充弹药",
     Callback = function()
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Players = game:GetService("Players")
@@ -579,167 +569,9 @@ end
     end,
 })
 
-
-local HttpService = game:GetService("HttpService")
-
-local folderPath = "WindUI"
-makefolder(folderPath)
-
-local function SaveFile(fileName, data)
-    local filePath = folderPath .. "/" .. fileName .. ".json"
-    local jsonData = HttpService:JSONEncode(data)
-    writefile(filePath, jsonData)
-end
-
-local function LoadFile(fileName)
-    local filePath = folderPath .. "/" .. fileName .. ".json"
-    if isfile(filePath) then
-        local jsonData = readfile(filePath)
-        return HttpService:JSONDecode(jsonData)
-    end
-end
-
-local function ListFiles()
-    local files = {}
-    for _, file in ipairs(listfiles(folderPath)) do
-        local fileName = file:match("([^/]+)%.json$")
-        if fileName then
-            table.insert(files, fileName)
-        end
-    end
-    return files
-end
-
--- 创建主标签页
-local MainTab = Window:Tab({
-    Title = "设置",
-    Icon = "settings",
-})
-
--- 创建窗口设置部分
-MainTab:Section({ Title = "界面" })
-
--- 获取所有主题名称
-local themeValues = {}
-for name, _ in pairs(WindUI:GetThemes()) do
-    table.insert(themeValues, name)
-end
-
--- 创建主题选择下拉菜单
-local themeDropdown = MainTab:Dropdown({
-    Title = "界面样式",
-    Multi = false,
-    AllowNone = false,
-    Value = nil,
-    Values = themeValues,
-    Callback = function(theme)
-        WindUI:SetTheme(theme)
-    end
-})
-themeDropdown:Select(WindUI:GetCurrentTheme())
-
--- 创建透明度切换按钮
-local ToggleTransparency = MainTab:Toggle({
-    Title = "背景透明与不透明",
-    Callback = function(e)
-        Window:ToggleTransparency(e)
+local Button = MainTab:Button({
+    Title = "最近马桶传送",
+    Callback = function()
+loadstring(game:HttpGet(" https://rawscripts.net/raw/ST-:-Blockade-Battlefront-auto-farm-beta-READ-DESC-27935"))()
     end,
-    Value = WindUI:GetTransparency()
 })
-
--- 创建保存文件部分
-MainTab:Section({ Title = "保存" })
-
--- 创建文件名输入框
-local fileNameInput = ""
-MainTab:Input({
-    Title = "输入名字",
-    PlaceholderText = "名字",
-    Callback = function(text)
-        fileNameInput = text
-    end
-})
-
--- 创建保存文件按钮
-MainTab:Button({
-    Title = "保存",
-    Callback = function()
-        if fileNameInput ~= "" then
-            SaveFile(fileNameInput, { Transparent = WindUI:GetTransparency(), Theme = WindUI:GetCurrentTheme() })
-        else
-            Window:Notify({ -- 假设 Window 有 Notify 方法
-                Title = "错误",
-                Content = "我不知道!",
-                Duration = 5,
-            })
-        end
-    end
-})
-
--- 创建加载文件部分
-MainTab:Section({ Title = "加载" })
-
--- 获取文件列表
-local files = ListFiles() -- 确保 ListFiles 函数已定义并返回文件列表
-
--- 创建文件选择下拉菜单
-local filesDropdown = MainTab:Dropdown({
-    Title = "选择加载",
-    Multi = false,
-    AllowNone = true,
-    Values = files,
-    Callback = function(selectedFile)
-        fileNameInput = selectedFile
-    end
-})
-
--- 创建加载文件按钮
-MainTab:Button({
-    Title = "加载",
-    Callback = function()
-        if fileNameInput ~= "" then
-            local data = LoadFile(fileNameInput)
-            if data then
-                WindUI:Notify({
-                    Title = "File Loaded",
-                    Content = "Loaded data: " .. HttpService:JSONEncode(data),
-                    Duration = 5,
-                })
-                if data.Transparent then 
-                    Window:ToggleTransparency(data.Transparent)
-                    ToggleTransparency:SetValue(data.Transparent)
-                end
-                if data.Theme then WindUI:SetTheme(data.Theme) end
-            end
-        end
-    end
-})
-
--- 创建刷新文件列表按钮
-MainTab:Button({
-    Title = "刷新",
-    Callback = function()
-        filesDropdown:Refresh(ListFiles()) -- 确保 ListFiles 函数已定义并返回文件列表
-    end
-})
-
--- 获取当前主题的颜色值
-local currentThemeName = WindUI:GetCurrentTheme()
-local themes = WindUI:GetThemes()
-
-local ThemeAccent = themes[currentThemeName].Accent
-local ThemeOutline = themes[currentThemeName].Outline
-local ThemeText = themes[currentThemeName].Text
-local ThemePlaceholderText = themes[currentThemeName].PlaceholderText
-
--- 更新主题颜色
-function updateTheme()
-    WindUI:AddTheme({
-        Name = currentThemeName,
-        Accent = ThemeAccent,
-        Outline = ThemeOutline,
-        Text = ThemeText,
-        PlaceholderText = ThemePlaceholderText
-    })
-    WindUI:SetTheme(currentThemeName)
-end
