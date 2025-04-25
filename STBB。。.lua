@@ -1,12 +1,10 @@
-local Version = "1.3.0"
-local WindUI = loadstring(game:HttpGet("https://tree-hub.vercel.app/api/UI/WindUI/" .. Version))()
+local WindUI = loadstring(game:HttpGet("https://tree-hub.vercel.app/api/UI/WindUI"))()
 
 local Window = WindUI:CreateWindow({
     Title = "STBB:Subtitle",
-    Icon = "door-open", 
-    Author = "Subtitle", 
+    Icon = "file-code", 
     Folder = "数据文件夹",
-    Size = UDim2.fromOffset(710, 400),
+    Size = UDim2.fromOffset(540, 400),
     Transparent = true, 
     Theme = "Dark", 
     UserEnabled = false,
@@ -14,18 +12,31 @@ local Window = WindUI:CreateWindow({
     HasOutline = true, 
 })
 
+WindUI:AddTheme({
+    Name = "Easter",
+    
+    -- 主题强调色（明亮的黄色）
+    Accent = "#F7DC6F",
+    
+    -- 主题边框色（柔和的粉色）
+    Outline = "#FFC0CB",
+    
+    -- 主题文本色（清新的绿色）
+    Text = "#90EE90",
+    
+    -- 主题占位符文本色（明亮的蓝色）
+    PlaceholderText = "#87CEEB"
+})
+
+
+
 Window:EditOpenButton({
-    Title = "神之力", 
-    Icon = "door-open",
-    CornerRadius = UDim.new(0,20),
+    Title = "menu🇨🇳", 
+    CornerRadius = UDim.new(0,0),
     StrokeThickness = 1, 
-    Color = ColorSequence.new(
-        Color3.fromHex("FF0F7B"), 
-        Color3.fromHex("F89B29")
-    ),
-    Position = UDim2.new(0.5,0,0.5,0),
+    Position = UDim2.new(0,71.5,0,75),
     Enabled = true,   
-    Draggable = true, 
+    Draggable = false, 
 })
 
 
@@ -35,7 +46,6 @@ local MainTab = Window:Tab({
 })
 
 MainTab:Section({ Title = "主要" })
-MainTab:Section({ Title = "你们应该都知道分别都是啥功能了" })
 
 
 local Button = MainTab:Button({
@@ -235,6 +245,7 @@ end
 
 local Button = MainTab:Button({
     Title = "雷达检测",
+    Locked = true,
     Callback = function()
 local player = game.Players.LocalPlayer
 local playerGui = player:WaitForChild("PlayerGui")
@@ -641,6 +652,18 @@ function findClosestAliveNPC(maxDistance, part)
         end
     end
     return closest
+end
+
+    end,
+})
+
+
+local Button = MainTab:Button({
+    Title = "无限暂停",
+    Callback = function()
+while true do
+    game:GetService("ReplicatedStorage"):WaitForChild("TimeStops"):FireServer()
+    wait(1 / 3000)
 end
 
     end,
