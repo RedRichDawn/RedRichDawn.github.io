@@ -1,56 +1,35 @@
-local WindUI = loadstring(game:HttpGet("https://tree-hub.vercel.app/api/UI/WindUI"))()
+local Luna = loadstring(game:HttpGet("https://raw.githubusercontent.com/Nebula-Softworks/Luna-Interface-Suite/refs/heads/main/source.lua", true))()
 
-local Window = WindUI:CreateWindow({
-    Title = "STBB:Subtitle",
-    Icon = "file-code", 
-    Folder = "数据文件夹",
-    Size = UDim2.fromOffset(540, 400),
-    Transparent = true, 
-    Theme = "Dark", 
-    UserEnabled = false,
-    SideBarWidth = 140, 
-    HasOutline = true, 
+local Window = Luna:CreateWindow({
+	Name = "STBB:Subtitle", -- 窗口的标题
+	Subtitle = nil, -- 窗口的副标题（灰色文字），这里没有设置
+	LogoID = "82795327169782", -- 窗口的Logo图片ID，如果没有Logo可以设置为nil
+	LoadingEnabled = true, -- 是否启用加载动画
+	LoadingTitle = "STBB:Subtitle", -- 加载屏幕的标题
+	LoadingSubtitle = "by Subtitle", -- 加载屏幕的副标题
+
+	ConfigSettings = {
+		RootFolder = nil, -- 根文件夹路径，如果不需要可以设置为nil
+		ConfigFolder = "zm Hub" -- 配置文件存储的文件夹名称
+	}
 })
 
-WindUI:AddTheme({
-    Name = "Easter",
-    
-    -- 主题强调色（明亮的黄色）
-    Accent = "#F7DC6F",
-    
-    -- 主题边框色（柔和的粉色）
-    Outline = "#FFC0CB",
-    
-    -- 主题文本色（清新的绿色）
-    Text = "#90EE90",
-    
-    -- 主题占位符文本色（明亮的蓝色）
-    PlaceholderText = "#87CEEB"
+local Tab = Window:CreateTab({
+	Name = "主要",
+	Icon = "view_in_ar",
+	ImageSource = "Material",
+	ShowTitle = true
 })
 
-
-
-Window:EditOpenButton({
-    Title = "menu🇨🇳", 
-    CornerRadius = UDim.new(0,0),
-    StrokeThickness = 1, 
-    Position = UDim2.new(0,71.5,0,75),
-    Enabled = true,   
-    Draggable = false, 
+local Label = Tab:CreateLabel({
+	Text = "点击左上角月亮图标展开侧边栏",
+	Style = 2
 })
 
-
-local MainTab = Window:Tab({
-    Title = "主要",
-    Icon = "house",
-})
-
-MainTab:Section({ Title = "主要" })
-
-
-local Button = MainTab:Button({
-    Title = "UTC页",
-    Callback = function()
+local Button = Tab:CreateButton({
+	Name = "UTC页",
+	Description = nil,
+    	Callback = function()
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 local PlayerGui = LocalPlayer:WaitForChild("PlayerGui")
@@ -117,7 +96,7 @@ game:GetService("UserInputService").InputEnded:Connect(function(input)
         dragging = false
     end
 end)
-    end,
+    end
 })
 
 
@@ -128,11 +107,12 @@ end)
 
 
 
-local Button = MainTab:Button({
-    Title = "重置人物",
-    Callback = function()
+local Button = Tab:CreateButton({
+	Name = "重置人物",
+	Description = nil,
+    	Callback = function()
          		      		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(152.35, -497.32, 394.21)
-    end,
+    end
 })
 
 
@@ -142,9 +122,10 @@ local Button = MainTab:Button({
 
 
 
-local Button = MainTab:Button({
-    Title = "钱即无敌",
-    Callback = function()
+local Button = Tab:CreateButton({
+	Name = "有钱即无敌",
+	Description = nil, 
+    	Callback = function()
         local args = {
     [1] = "Buy",
     [2] = "FillHP"
@@ -155,7 +136,7 @@ while true do
     wait()
 end
 
-    end,
+    end
 })
 
 
@@ -165,9 +146,10 @@ end
 
 
 
-local Button = MainTab:Button({
-    Title = "死亡激光",
-    Callback = function()
+local Button = Tab:CreateButton({
+	Name = "死亡激光",
+	Description = nil,
+    	Callback = function()
 local function createButton()
     local button = Instance.new("TextButton")
     button.Text = "开始"
@@ -236,107 +218,14 @@ while true do
 end
 
 
-    end,
+    end
 })
 
 
-
-
-
-local Button = MainTab:Button({
-    Title = "雷达检测",
-    Locked = true,
-    Callback = function()
-local player = game.Players.LocalPlayer
-local playerGui = player:WaitForChild("PlayerGui")
-
-local screenGui = Instance.new("ScreenGui")
-screenGui.Name = "TransmitterUI"
-screenGui.Parent = playerGui
-screenGui.ResetOnSpawn = false
-
-local statusLabel = Instance.new("TextLabel")
-statusLabel.Name = "StatusLabel"
-statusLabel.Text = "正在检测..."
-statusLabel.TextColor3 = Color3.new(1, 1, 1)
-statusLabel.BackgroundColor3 = Color3.new(0.8, 0.8, 0.8)
-statusLabel.Size = UDim2.new(0, 90, 0, 30)
-statusLabel.Position = UDim2.new(0, 10, 0, 10)
-statusLabel.Font = Enum.Font.SourceSansBold
-statusLabel.TextSize = 20
-statusLabel.Parent = screenGui
-
-local poles = {}
-
-local function updatePoleForTransmitter(transmitterToilet)
-    if transmitterToilet then
-        local rootPart = transmitterToilet:FindFirstChild("HumanoidRootPart")
-        if rootPart then
-            if not poles[transmitterToilet] then
-                local pole = Instance.new("Part")
-                pole.Name = "IndicatorPole"
-                pole.Size = Vector3.new(2, 50, 2)
-                pole.Color = Color3.new(1, 0, 0)
-                pole.Material = Enum.Material.SmoothPlastic
-                pole.CanCollide = false
-                pole.Parent = workspace
-                poles[transmitterToilet] = pole
-            end
-
-            local pole = poles[transmitterToilet]
-            pole.Position = rootPart.Position + Vector3.new(0, pole.Size.Y / 2, 0)
-            pole.Size = Vector3.new(2, pole.Size.Y + 1, 2)
-        end
-    end
-end
-
-local function checkTransmitterToilets()
-    local livingFolder = workspace:FindFirstChild("Living")
-    if livingFolder then
-        local transmitterToilets = livingFolder:GetChildren()
-        for _, transmitterToilet in ipairs(transmitterToilets) do
-            if transmitterToilet.Name == "Transmitter toilet" then
-                updatePoleForTransmitter(transmitterToilet)
-            end
-        end
-    end
-
-    for transmitterToilet, pole in pairs(poles) do
-        if not transmitterToilet.Parent then
-            pole:Destroy()
-            poles[transmitterToilet] = nil
-        end
-    end
-end
-
-local function checkTransmitterToilet()
-    local transmitterToilet = workspace:FindFirstChild("Living") and workspace.Living:FindFirstChild("Transmitter toilet")
-    if transmitterToilet then
-        statusLabel.Text = "雷达出现"
-        statusLabel.TextColor3 = Color3.new(1, 0, 0)
-    else
-        statusLabel.Text = "没有雷达"
-        statusLabel.TextColor3 = Color3.new(0, 1, 0)
-    end
-end
-
-local function startChecking()
-    while wait() do
-        checkTransmitterToilet()
-        checkTransmitterToilets()
-    end
-end
-
-startChecking()
-
-    end,
-})
-
-
-
-local Button = MainTab:Button({
-    Title = "监控博士",
-    Callback = function()
+local Button = Tab:CreateButton({
+	Name = "监控博士",
+	Description = nil,
+    	Callback = function()
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 local PlayerGui = LocalPlayer:WaitForChild("PlayerGui")
@@ -380,14 +269,15 @@ createButton("飞行", UDim2.new(0.5, 170, 0.5, 10), "Tackle")
 
 
 
-    end,
+    end
 })
 
 
 
-local Button = MainTab:Button({
-    Title = "飞机商店",
-    Callback = function()
+local Button = Tab:CreateButton({
+	Name = "飞机商店",
+	Description = nil,
+    	Callback = function()
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 local PlayerGui = LocalPlayer:WaitForChild("PlayerGui")
@@ -436,15 +326,16 @@ Button.MouseButton1Down:Connect(function()
     startPos = game:GetService("UserInputService"):GetMouseLocation()
 end)
 
-    end,
+    end
 })
 
 
 
 
-local Button = MainTab:Button({
-    Title = "准星调整",
-    Callback = function()
+local Button = Tab:CreateButton({
+	Name = "准心调整",
+	Description = nil,
+    	Callback = function()
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 local PlayerGui = LocalPlayer:WaitForChild("PlayerGui")
@@ -467,84 +358,14 @@ MiddleIcon.Size = UDim2.new(0.0200000033, 0, 0.204999968, 0)
 MiddleIcon.Position = UDim2.new(0.5, 0, 0.5, 0)  -- 调整到正中心
 
 
-    end,
+    end
 })
 
 
-
-local Button = MainTab:Button({
-    Title = "四角传送",
-    Callback = function()
-local Players = game:GetService("Players")
-local LocalPlayer = Players.LocalPlayer
-local PlayerGui = LocalPlayer:WaitForChild("PlayerGui")
-
--- 创建一个 ScreenGui 用于放置按钮
-local ScreenGui = Instance.new("ScreenGui")
-ScreenGui.Name = "TeleportControlGui"
-ScreenGui.ResetOnSpawn = false
-ScreenGui.Parent = PlayerGui
-
--- 创建按钮
-local Button = Instance.new("TextButton")
-Button.Name = "ToggleTeleportButton"
-Button.Text = "开启传送"
-Button.Size = UDim2.new(0, 120, 0, 30)
-Button.Position = UDim2.new(0.5, -60, 0.5, -15)
-Button.Font = Enum.Font.SourceSansBold
-Button.TextSize = 18
-Button.Parent = ScreenGui
-
--- 定义四个坐标
-local positions = {
-    Vector3.new(-63.550140380859375, 39.00679397583008, 42.31529998779297),
-    Vector3.new(26.513303756713867, 39.00679397583008, 44.285369873046875),
-    Vector3.new(26.766094207763672, 39.00679397583008, -53.3952522277832),
-    Vector3.new(-79.17745971679688, 39.00679397583008, -63.349891662597656)
-}
-
--- 当前位置索引
-local currentIndex = 1
-
--- 控制传送功能的开关
-local isTeleporting = false
-
--- 传送函数
-local function teleportToNextPosition()
-    -- 获取下一个位置
-    local nextIndex = currentIndex + 1
-    if nextIndex > #positions then
-        nextIndex = 1  -- 如果超出范围，回到第一个位置
-    end
-    currentIndex = nextIndex
-
-    -- 传送玩家到下一个位置
-    local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
-    local HumanoidRootPart = Character:WaitForChild("HumanoidRootPart")
-    HumanoidRootPart.CFrame = CFrame.new(positions[currentIndex])
-end
-
--- 按钮点击事件
-Button.MouseButton1Click:Connect(function()
-    isTeleporting = not isTeleporting
-    Button.Text = isTeleporting and "关闭传送" or "开启传送"
-end)
-
--- 每0.7秒传送一次，但可以通过按钮控制开启和关闭
-while wait(0.7) do
-    if isTeleporting then
-        teleportToNextPosition()
-    end
-end
-
-    end,
-})
-
-
-
-local Button = MainTab:Button({
-    Title = "无限弹药",
-    Callback = function()
+local Button = Tab:CreateButton({
+	Name = "无限子弹",
+	Description = nil, 
+    	Callback = function()
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
@@ -577,13 +398,14 @@ while wait() do
 end
 
 
-    end,
+    end
 })
 
 
-local Button = MainTab:Button({
-    Title = "传送最近马桶",
-    Callback = function()
+local Button = Tab:CreateButton({
+	Name = "传送最近马桶",
+	Description = nil,
+    	Callback = function()
 -- Auto Farm for ST: Blockade Reboot
 -- Bypasses Anti-Cheat, Instantly Teleports, and Attacks NPCs
 -- WARNING: Use at your own risk!
@@ -654,17 +476,195 @@ function findClosestAliveNPC(maxDistance, part)
     return closest
 end
 
-    end,
+    end
 })
 
 
-local Button = MainTab:Button({
-    Title = "无限暂停",
-    Callback = function()
+local Button = Tab:CreateButton({
+	Name = "无限暂停",
+	Description = nil,
+    	Callback = function()
 while true do
     game:GetService("ReplicatedStorage"):WaitForChild("TimeStops"):FireServer()
     wait(1 / 3000)
 end
 
-    end,
+    end
+})
+
+
+
+
+
+
+
+
+
+
+
+local Tab = Window:CreateTab({
+	Name = "自动刷等级",
+	Icon = "auto_awesome_motion",
+	ImageSource = "Material",
+	ShowTitle = true
+})
+
+local Label = Tab:CreateLabel({
+	Text = "___",
+	Style = 1
+})
+
+Tab:CreateSection("丧尸13波(zuttv没有出来之前)")
+Tab:CreateSection("开启钱即无敌")
+Tab:CreateSection("和下面这个")
+
+
+local Button = Tab:CreateButton({
+	Name = "四角传送(地面版本)",
+	Description = nil,
+    	Callback = function()
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+local PlayerGui = LocalPlayer:WaitForChild("PlayerGui")
+
+-- 创建一个 ScreenGui 用于放置按钮
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "TeleportControlGui"
+ScreenGui.ResetOnSpawn = false
+ScreenGui.Parent = PlayerGui
+
+-- 创建按钮
+local Button = Instance.new("TextButton")
+Button.Name = "ToggleTeleportButton"
+Button.Text = "开启传送"
+Button.Size = UDim2.new(0, 120, 0, 30)
+Button.Position = UDim2.new(0.5, -60, 0.5, -15)
+Button.Font = Enum.Font.SourceSansBold
+Button.TextSize = 18
+Button.Parent = ScreenGui
+
+-- 定义四个坐标
+local positions = {
+    Vector3.new(-53.27527618408203, 4.706789493560791, -24.541484832763672),
+    Vector3.new(-40.269386291503906, 4.706789970397949, 27.70499038696289),
+    Vector3.new(26.435800552368164, 4.706790924072266, 24.221435546875),
+    Vector3.new(26.77167510986328, 4.706789970397949, -45.562496185302734)
+}
+
+-- 当前位置索引
+local currentIndex = 1
+
+-- 控制传送功能的开关
+local isTeleporting = false
+
+-- 传送函数
+local function teleportToNextPosition()
+    -- 获取下一个位置
+    local nextIndex = currentIndex + 1
+    if nextIndex > #positions then
+        nextIndex = 1  -- 如果超出范围，回到第一个位置
+    end
+    currentIndex = nextIndex
+
+    -- 传送玩家到下一个位置
+    local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+    local HumanoidRootPart = Character:WaitForChild("HumanoidRootPart")
+    HumanoidRootPart.CFrame = CFrame.new(positions[currentIndex])
+end
+
+-- 按钮点击事件
+Button.MouseButton1Click:Connect(function()
+    isTeleporting = not isTeleporting
+    Button.Text = isTeleporting and "关闭传送" or "开启传送"
+end)
+
+-- 每0.7秒传送一次，但可以通过按钮控制开启和关闭
+while wait(0.7) do
+    if isTeleporting then
+        teleportToNextPosition()
+    end
+end
+
+    end
+})
+
+Tab:CreateSection("使用连点器")
+Tab:CreateSection("把点击放在你要用的技能上")
+Tab:CreateSection("如果是一些小型普通角色需要买枪的我是建议用脉冲炮")
+Tab:CreateSection("然后用那个在空中传送的4个角落")
+Tab:CreateSection("再用空中行走在天上放个屏障让你待在空中传送")
+Tab:CreateSection("也就是这个")
+
+local Button = Tab:CreateButton({
+	Name = "四角传送(天空版本)",
+	Description = nil, 
+    	Callback = function()
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+local PlayerGui = LocalPlayer:WaitForChild("PlayerGui")
+
+-- 创建一个 ScreenGui 用于放置按钮
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "TeleportControlGui"
+ScreenGui.ResetOnSpawn = false
+ScreenGui.Parent = PlayerGui
+
+-- 创建按钮
+local Button = Instance.new("TextButton")
+Button.Name = "ToggleTeleportButton"
+Button.Text = "开启传送"
+Button.Size = UDim2.new(0, 120, 0, 30)
+Button.Position = UDim2.new(0.5, -60, 0.5, -15)
+Button.Font = Enum.Font.SourceSansBold
+Button.TextSize = 18
+Button.Parent = ScreenGui
+
+-- 定义四个坐标
+local positions = {
+    Vector3.new(-63.550140380859375, 39.00679397583008, 42.31529998779297),
+    Vector3.new(26.513303756713867, 39.00679397583008, 44.285369873046875),
+    Vector3.new(26.766094207763672, 39.00679397583008, -53.3952522277832),
+    Vector3.new(-79.17745971679688, 39.00679397583008, -63.349891662597656)
+}
+
+-- 当前位置索引
+local currentIndex = 1
+
+-- 控制传送功能的开关
+local isTeleporting = false
+
+-- 传送函数
+local function teleportToNextPosition()
+    -- 获取下一个位置
+    local nextIndex = currentIndex + 1
+    if nextIndex > #positions then
+        nextIndex = 1  -- 如果超出范围，回到第一个位置
+    end
+    currentIndex = nextIndex
+
+    -- 传送玩家到下一个位置
+    local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+    local HumanoidRootPart = Character:WaitForChild("HumanoidRootPart")
+    HumanoidRootPart.CFrame = CFrame.new(positions[currentIndex])
+end
+
+-- 按钮点击事件
+Button.MouseButton1Click:Connect(function()
+    isTeleporting = not isTeleporting
+    Button.Text = isTeleporting and "关闭传送" or "开启传送"
+end)
+
+-- 每0.7秒传送一次，但可以通过按钮控制开启和关闭
+while wait(0.7) do
+    if isTeleporting then
+        teleportToNextPosition()
+    end
+end
+
+    	end
+})
+
+local Label = Tab:CreateLabel({
+	Text = "使用连点器可以避免进入afk",
+	Style = 2
 })
