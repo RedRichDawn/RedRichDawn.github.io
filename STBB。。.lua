@@ -496,8 +496,94 @@ end
 
 
 
+local Button = Tab:CreateButton({
+    Name = "雷达检测",
+    Description = nil,
+    Callback = function()
+        local espLabels = {} -- 用于存储ESP标签
+        local detectedTransmitters = {} -- 用于记录已经检测到的Transmitter toilet对象
+
+        -- 创建ESP标签的函数
+        local function createESPLabelForTransmitter(transmitterToilet)
+            if transmitterToilet and not espLabels[transmitterToilet] then
+                -- 获取模型的PrimaryPart，如果没有则使用模型本身
+                local adornee = transmitterToilet:FindFirstChildWhichIsA("BasePart") or transmitterToilet
+
+                -- 创建一个BillboardGui来显示ESP文字
+                local billboardGui = Instance.new("BillboardGui")
+                billboardGui.Name = "ESPBillboard"
+                billboardGui.Size = UDim2.new(0, 200, 0, 50)
+                billboardGui.AlwaysOnTop = true
+                billboardGui.Adornee = adornee
+                billboardGui.Parent = game:GetService("CoreGui")
+
+                -- 创建一个TextLabel来显示文字
+                local textLabel = Instance.new("TextLabel")
+                textLabel.Name = "ESPText"
+                textLabel.Text = "雷达"
+                textLabel.Font = Enum.Font.SourceSansBold
+                textLabel.TextSize = 20
+                textLabel.TextColor3 = Color3.new(1, 0, 0) -- 红色文字
+                textLabel.BackgroundTransparency = 1
+                textLabel.Size = UDim2.new(1, 0, 1, 0)
+                textLabel.Parent = billboardGui
+
+                espLabels[transmitterToilet] = billboardGui
+            end
+        end
+
+        -- 检测所有Transmitter toilet并创建ESP标签
+        local function checkTransmitterToilets()
+            local livingFolder = workspace:FindFirstChild("Living")
+            if livingFolder then
+                local transmitterToilets = livingFolder:GetChildren()
+                for _, transmitterToilet in ipairs(transmitterToilets) do
+                    if transmitterToilet.Name == "Transmitter toilet" and not detectedTransmitters[transmitterToilet] then
+                        -- 创建ESP标签
+                        createESPLabelForTransmitter(transmitterToilet)
+                        -- 触发通知
+                        Luna:Notification({
+                            Title = "雷达出现",
+                            Icon = "dangerous",
+                            ImageSource = "Material",
+                            Content = "赶紧去清理，不然你死定了"
+                        })
+                        -- 记录已经检测到的Transmitter toilet对象
+                        detectedTransmitters[transmitterToilet] = true
+                    end
+                end
+            end
+
+            -- 清理不存在的ESP标签
+            for transmitterToilet, billboardGui in pairs(espLabels) do
+                if not transmitterToilet.Parent then
+                    billboardGui:Destroy()
+                    espLabels[transmitterToilet] = nil
+                    detectedTransmitters[transmitterToilet] = nil -- 从已检测对象中移除
+                end
+            end
+        end
+
+        -- 持续检测
+        local function startChecking()
+            while wait() do
+                checkTransmitterToilets()
+            end
+        end
+
+        startChecking()
+    end
+})
 
 
+
+local Button = Tab:CreateButton({
+    Name = "获取音响装甲",
+    Description = nil,
+    Callback = function()
+game:GetService("ReplicatedStorage"):WaitForChild("ChangeToCinema"):FireServer()
+    end
+})
 
 
 
