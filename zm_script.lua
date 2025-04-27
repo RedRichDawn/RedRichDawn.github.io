@@ -481,18 +481,6 @@ end
 })
 
 
-local Button = Tab:CreateButton({
-	Name = "无限暂停",
-	Description = nil,
-    	Callback = function()
-while true do
-    game:GetService("ReplicatedStorage"):WaitForChild("TimeStops"):FireServer()
-    wait(1 / 3000)
-end
-
-    end
-})
-
 
 
 
@@ -755,3 +743,55 @@ local Label = Tab:CreateLabel({
 	Text = "使用连点器可以避免进入afk",
 	Style = 2
 })
+
+local Tab = Window:CreateTab({
+	Name = "无限暂停",
+	Icon = "schedule",
+	ImageSource = "Material",
+	ShowTitle = true
+})
+
+
+local Label = Tab:CreateLabel({
+	Text = "___",
+	Style = 1
+})
+
+
+
+Tab:CreateSection("使用时钟，然后运行下面这个")
+
+
+
+local Button = Tab:CreateButton({
+	Name = "无限暂停",
+	Description = nil,
+    	Callback = function()
+while true do
+    game:GetService("ReplicatedStorage"):WaitForChild("TimeStops"):FireServer()
+    wait(1 / 3000)
+end
+
+    end
+})
+
+Tab:CreateSection("暂停了一次后，使用一次重置角色就这样一直循环")
+
+local Button = Tab:CreateButton({
+	Name = "重置人物",
+	Description = nil,
+    	Callback = function()
+         		      		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(152.35, -497.32, 394.21)
+    end
+})
+
+
+
+local Label = Tab:CreateLabel({
+	Text = "就可以无限暂停了",
+	Style = 1
+})
+
+
+
+
